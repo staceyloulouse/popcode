@@ -6,8 +6,9 @@ root.title("Algebra Calculator")
 #operator string
 operator = ''
 textInput = StringVar()
-statusText = 'Thanks for using the Algebra Calculator'
-previewText = 'Preview'
+statusText = StringVar()
+previewText = StringVar()
+
 
 #setup calculator environment
 e = Entry(root, textvariable= textInput,justify='right',width = 70, borderwidth = 5)
@@ -16,56 +17,60 @@ e.grid(row = 0, column = 0, columnspan = 5, padx=10,pady=10)
 
 
 #reaction to clicking the button
-def myClick(item):
+def numClick(number):
+    global operator
+    global previewText
+    operator= operator + str(number)
+    textInput.set(operator)
     
-    current = e.get()
-    e.insert(0, item)
-    e.delete(0,END)
-    myLabel = Label(root, text=item)
-    myLabel.grid(row=9, column=0, columnspan=3, padx=10,pady=10)
-    if item == '1':
-        one()
-    return current
-def one():
-    expression = 1
-    myLabel = Label(root, text=expression)
-    myLabel.grid(row=9, column=0, columnspan=3, padx=10,pady=10)
-    return expression
+#preview area function
+def updatePreview():
+    global operator
+    global previewText
+    previewText = previewText + operator
+    previewText.set(previewText)
 
-def action(item):
-    entry = item
-    if entry == "LCM":
-        myLabel = Label(root, text=entry)
-        myLabel.grid(row=9, column=0, columnspan=3, padx=10,pady=10)
+#clear button function
+def actionClear():
+    global operator
+    global statusText
+    statusText.set(operator + ' cleared')
+    operator = ''
+    textInput.set('')
 
+#equal button function
+def actionEqual():
+    global operator
+    answer = str(eval(operator))
+    textInput.set(answer)
 
 #define buttons in top row (7,8,9,/,LCM)=================================================
-button7 = Button(root, text = "7", padx=40,pady=20)
+button7 = Button(root, text = "7", command=lambda: numClick(7),padx=40,pady=20)
 button7.grid(row=2, column=0)
 
-button8 = Button(root, text = "8", padx=40,pady=20)
+button8 = Button(root, text = "8", command=lambda: numClick(8),padx=40,pady=20)
 button8.grid(row=2, column=1)
 
-button9 = Button(root, text = "9", padx=40,pady=20)
+button9 = Button(root, text = "9", command=lambda: numClick(9),padx=40,pady=20)
 button9.grid(row=2, column=2)
 
-buttonDivide = Button(root, text = "/", padx=40,pady=20)
+buttonDivide = Button(root, text = "/", command = lambda: numClick("/"), padx=40,pady=20)
 buttonDivide.grid(row=2, column=3)
 
 buttonLcm = Button(root, text = "LCM", padx=35,pady=20)
 buttonLcm.grid(row=2, column=4)
 
 #Second row of buttons (4, 5,6,*,GCF)===================================================
-button4 = Button(root, text = "4", padx=40,pady=20)
+button4 = Button(root, text = "4", command=lambda: numClick(4),padx=40,pady=20)
 button4.grid(row=3, column=0)
 
-button5 = Button(root, text = "5", padx=40,pady=20)
+button5 = Button(root, text = "5", command=lambda: numClick(5),padx=40,pady=20)
 button5.grid(row=3,column=1)
 
-button6 = Button(root, text = "6", padx=40,pady=20)
+button6 = Button(root, text = "6", command=lambda: numClick(6),padx=40,pady=20)
 button6.grid(row=3, column=2)
 
-buttonMultiply = Button(root, text = "*", padx=40,pady=20)
+buttonMultiply = Button(root, text = "*", command=lambda: numClick('*'),padx=40,pady=20)
 buttonMultiply.grid(row=3, column=3)
 
 buttonGcf = Button(root, text = "GCF", padx=35,pady=20)
@@ -73,16 +78,16 @@ buttonGcf.grid(row=3,column=4)
 
 #Third row of buttons (1,2,3,-,AVG)=======================================================
 
-button1 = Button(root, text = "1", padx=40,pady=20)
+button1 = Button(root, text = "1", command=lambda: numClick(1),padx=40,pady=20)
 button1.grid(row=4, column=0)
 
-button2 = Button(root, text = "2", padx=40,pady=20)
+button2 = Button(root, text = "2", command=lambda: numClick(2),padx=40,pady=20)
 button2.grid(row=4, column=1)
 
-button3 = Button(root, text = "3", padx=40,pady=20)
+button3 = Button(root, text = "3", command=lambda: numClick(3),padx=40,pady=20)
 button3.grid(row=4, column=2)
 
-buttonSubtract = Button(root, text = "-", padx=40,pady=20)
+buttonSubtract = Button(root, text = "-", command=lambda: numClick('-'),padx=40,pady=20)
 buttonSubtract.grid(row=4, column=3)
 
 buttonAvg = Button(root, text = "AVG", padx=35,pady=20)
@@ -92,14 +97,14 @@ buttonAvg.grid(row=4, column=4)
 buttonNegate = Button(root, text = "(-)", padx=40,pady=20)
 buttonNegate.grid(row=5, column=0)
 
-button0 = Button(root, text = "0", padx=40,pady=20)
+button0 = Button(root, text = "0", command=lambda: numClick(0),padx=40,pady=20)
 button0.grid(row=5, column=1)
 
-buttonDecimal = Button(root, text = ".", padx=40,pady=20)
+buttonDecimal = Button(root, text = ".", command=lambda: numClick('.'),padx=40,pady=20)
 buttonDecimal.grid(row=5, column=2)
 
 
-buttonAdd = Button(root, text = "+", padx=40,pady=20)
+buttonAdd = Button(root, text = "+", command=lambda: numClick('+'),padx=40,pady=20)
 buttonAdd.grid(row=5, column=3)
 
 
@@ -136,14 +141,14 @@ buttonXy.grid(row=7, column=1)
 buttonFactorial = Button(root, text = "!", padx=40,pady=20)
 buttonFactorial.grid(row=7, column=2)
 
-buttonEqual = Button(root, text = "=", padx=40,pady=20)
+buttonEqual = Button(root, text = "=", command = lambda: actionEqual(), padx=40,pady=20)
 buttonEqual.grid(row=7, column=3)
 
-buttonClear = Button(root, text = "Clear", padx=30,pady=20)
+buttonClear = Button(root, text = "Clear", command = lambda: actionClear(),padx=30,pady=20)
 buttonClear.grid(row=7, column=4)
 
 #Preview Area======================================================================================
-fieldPreview= Label(root, width = 50, borderwidth = 5,bg='powder blue', text = previewText,padx=20,pady=10)
+fieldPreview= Label(root, width = 50, borderwidth = 5,bg='powder blue',textvariable = previewText,padx=20,pady=10)
 fieldPreview.grid(row=8, column=0, columnspan=3, padx=20)
 
 #button to request simplified expression
@@ -155,7 +160,7 @@ buttonSolve = Button(root, text = "Solve", padx=30,pady=20)
 buttonSolve.grid(row=9, column=3, columnspan=3)
 
 #status message area
-statusMessage = Label(root,text= statusText)
+statusMessage = Label(root,textvariable= statusText)
 statusMessage.grid(row=9,column=0,columnspan=3)
 
 # repeat root display until window closes
