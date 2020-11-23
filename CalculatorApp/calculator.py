@@ -56,6 +56,30 @@ def actionNegate():
     operator = '-('+operator+')'
     textInput.set(operator)
 
+#percent function
+def actionPercent():
+    global operator
+    try:
+        answer = str(eval(operator)/100)
+        textInput.set(answer)
+        statusText.set('('+ operator + ')%= '+ answer) 
+        operator = answer
+    except SyntaxError as y:
+        statusText.set('Error')
+    operator
+
+#LCM function
+
+#GCF function
+
+#AVG function
+
+#nCr function
+
+#nPr function
+
+
+
 #define buttons in top row (7,8,9,/,LCM)=================================================
 button7 = Button(root, text = "7", command=lambda: numClick(7),padx=40,pady=20)
 button7.grid(row=2, column=0)
@@ -135,7 +159,7 @@ buttonY.grid(row=6, column=1)
 buttonComma = Button(root, text = ",", padx=40, pady = 20)
 buttonComma.grid(row=6, column=2)
 
-buttonPercent = Button(root, text = "%", padx=40,pady=20)
+buttonPercent = Button(root, text = "%", command = lambda: actionPercent(), padx=40,pady=20)
 buttonPercent.grid(row=6,column=3)
 
 buttonNpR = Button(root, text = "nPr", padx=37,pady=20)
