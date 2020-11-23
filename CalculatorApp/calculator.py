@@ -11,12 +11,12 @@ previewText = StringVar()
 
 
 #setup calculator environment
-e = Entry(root, textvariable= textInput,justify='right',width = 70, borderwidth = 5)
+e = Entry(root, fg = 'green', textvariable= textInput,justify='right',width = 70, borderwidth = 5)
 e.grid(row = 0, column = 0, columnspan = 5, padx=10,pady=10)
 
 
 
-#reaction to clicking the button
+#reaction to clicking the numbers and operator buttons
 def numClick(number):
     global operator
     global previewText
@@ -41,8 +41,20 @@ def actionClear():
 #equal button function
 def actionEqual():
     global operator
-    answer = str(eval(operator))
-    textInput.set(answer)
+    global statusText
+    try:
+        answer = str(eval(operator))
+        textInput.set(answer)
+        statusText.set(operator + '= '+ answer)
+    except SyntaxError as y:
+        statusText.set('Error')
+    
+    
+#negate button function
+def actionNegate():
+    global operator
+    operator = '-('+operator+')'
+    textInput.set(operator)
 
 #define buttons in top row (7,8,9,/,LCM)=================================================
 button7 = Button(root, text = "7", command=lambda: numClick(7),padx=40,pady=20)
@@ -94,7 +106,7 @@ buttonAvg = Button(root, text = "AVG", padx=35,pady=20)
 buttonAvg.grid(row=4, column=4)
 
 #Fourth row of buttons ((-),0,+,nCr)=======================================================
-buttonNegate = Button(root, text = "(-)", padx=40,pady=20)
+buttonNegate = Button(root, text = "(-)", command = lambda: actionNegate(), padx=40,pady=20)
 buttonNegate.grid(row=5, column=0)
 
 button0 = Button(root, text = "0", command=lambda: numClick(0),padx=40,pady=20)
@@ -160,7 +172,7 @@ buttonSolve = Button(root, text = "Solve", padx=30,pady=20)
 buttonSolve.grid(row=9, column=3, columnspan=3)
 
 #status message area
-statusMessage = Label(root,textvariable= statusText)
+statusMessage = Label(root, fg = 'red', textvariable= statusText)
 statusMessage.grid(row=9,column=0,columnspan=3)
 
 # repeat root display until window closes
