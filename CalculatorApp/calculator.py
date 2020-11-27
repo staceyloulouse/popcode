@@ -36,12 +36,13 @@ def actionClear():
     global statusText
     statusText.set(operator + ' cleared')
     operator = ''
-    textInput.set('')
+    textInput.set('0')
 
 #equal button function
 def actionEqual():
     global operator
     global statusText
+    answer = ''
     try:
         answer = str(eval(operator))
         textInput.set(answer)
@@ -66,17 +67,50 @@ def actionPercent():
         operator = answer
     except SyntaxError as y:
         statusText.set('Error')
-    operator
 
 #LCM function
+def actionLCM():
+    global operator
+    textInput.set('')
+    if operator[0] =='L':
+        previewText.set(operator + ')')
+        numbers =operator.split(",")
+        statusText.set(numbers)
 
+        
+        statusText.set(numbers[0].lenth)
+
+        answer = getLCM(numbers)
+        textInput.set(answer)
+    else:
+        operator = 'LCM('
+        textInput.set(operator)
+        statusText.set('Please enter expressions separated by comma. Then click LCM')
+
+#finds LCM of the list
+def getLCM(numbers):
+    global operator
+    answer = 1
+    for i in numbers:
+        answer = answer * i
+    operator = ''
+    return answer
+    
 #GCF function
+def getGCF(numbers):
+    return 1
 
 #AVG function
+def getAVG(numbers):
+    return 1
 
 #nCr function
+def getnCr(numbers):
+    return 1
 
 #nPr function
+def getnPr(numbers):
+    return 1
 
 
 
@@ -93,7 +127,7 @@ button9.grid(row=2, column=2)
 buttonDivide = Button(root, text = "/", command = lambda: numClick("/"), padx=40,pady=20)
 buttonDivide.grid(row=2, column=3)
 
-buttonLcm = Button(root, text = "LCM", padx=35,pady=20)
+buttonLcm = Button(root, text = "LCM", command = lambda: actionLCM(),padx=35,pady=20)
 buttonLcm.grid(row=2, column=4)
 
 #Second row of buttons (4, 5,6,*,GCF)===================================================
@@ -156,7 +190,7 @@ buttonY = Button(root, text = "y", padx=40,pady=20)
 buttonY.grid(row=6, column=1)
 
 
-buttonComma = Button(root, text = ",", padx=40, pady = 20)
+buttonComma = Button(root, text = ",", command = lambda: numClick(','),padx=40, pady = 20)
 buttonComma.grid(row=6, column=2)
 
 buttonPercent = Button(root, text = "%", command = lambda: actionPercent(), padx=40,pady=20)
